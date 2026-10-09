@@ -1,8 +1,8 @@
-/* Shared by the video page and the README cover render (cover.html).
-   The title card is 1920x1080 and every size here is in cqw of the card
-   (1cqw = 19.2px at full size), so the play button sits in the same spot
-   over the poster at any width: left edge on the card's text column
-   (x 161), centred in the empty band under its waveform line (y 940). */
+/* The video page's card and its two overlays. The poster carries its own
+   play button, so `.play` is the poster laid over the whole card (a failed
+   start has already replaced the video's own poster with its first frame);
+   `.sound` covers the card while the film runs muted, with a pill in its
+   corner. Sizes are in cqw of the 16:9 card, with px floors for phones. */
 
 @font-face {
   font-family: "Inter Display";
@@ -26,7 +26,6 @@
   background: #070609;
 }
 
-.card > img,
 .card > video {
   position: absolute;
   inset: 0;
@@ -35,74 +34,83 @@
   display: block;
 }
 
-.play {
+.play,
+.sound {
   all: unset;
   position: absolute;
   inset: 0;
   cursor: pointer;
 }
 
-/* The visible cue; the whole card is the button's hit area. Floors keep it
-   tappable on a phone, where it still fits the band under the line. */
-.play .cue {
-  position: absolute;
-  left: 8.385cqw;
-  top: 48.96cqw;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  gap: max(1.458cqw, 10px);
-  color: #f1f1f3;
+.play img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-.play[hidden] {
+.play[hidden],
+.sound[hidden] {
   display: none;
 }
 
-.play .disc {
-  width: max(4.583cqw, 44px);
-  height: max(4.583cqw, 44px);
+.play:focus-visible {
+  outline: 2px solid #f1f1f3;
+  outline-offset: -6px;
+}
+
+.sound .pill {
+  position: absolute;
+  left: max(2.5cqw, 12px);
+  bottom: max(2.5cqw, 12px);
+  display: flex;
+  align-items: center;
+  gap: max(1.2cqw, 10px);
+  padding: max(0.8cqw, 6px) max(2cqw, 16px) max(0.8cqw, 6px) max(0.8cqw, 6px);
+  border-radius: 999px;
+  background: rgba(7, 6, 9, 0.62);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #f1f1f3;
+}
+
+.sound .disc {
+  width: max(4cqw, 38px);
+  height: max(4cqw, 38px);
   border-radius: 50%;
   background: #f1f1f3;
+  color: #070609;
   display: grid;
   place-items: center;
   transition: transform 0.15s ease-out;
 }
 
-.play .disc svg {
-  width: 38%;
-  height: 38%;
-  margin-left: 8%;
-  fill: #070609;
+.sound .disc svg {
+  width: 52%;
+  height: 52%;
 }
 
-.play .label {
+.sound .label {
   display: flex;
   flex-direction: column;
   gap: max(0.45cqw, 4px);
 }
 
-.play .title {
-  font: 700 max(2.292cqw, 15px)/1 "Inter Display", Inter, system-ui, sans-serif;
-  letter-spacing: -0.02em;
+.sound .title {
+  font: 700 max(1.9cqw, 15px)/1 "Inter Display", Inter, system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
 
-.play .meta {
-  font: 400 max(1.354cqw, 11px)/1 "JetBrains Mono", ui-monospace, monospace;
-  color: #9e9ea0;
+.sound .meta {
+  font: 400 max(1.2cqw, 11px)/1 "JetBrains Mono", ui-monospace, monospace;
+  color: #b5b5b8;
 }
 
-.play:hover .disc,
-.play:focus-visible .disc {
+.sound:hover .disc,
+.sound:focus-visible .disc {
   transform: scale(1.06);
 }
 
-.play:focus-visible {
-  outline: none;
-}
-
-.play:focus-visible .cue {
+.sound:focus-visible .pill {
   outline: 2px solid #f1f1f3;
-  outline-offset: max(0.6cqw, 6px);
-  border-radius: max(3cqw, 30px);
+  outline-offset: 3px;
 }

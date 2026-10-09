@@ -44,28 +44,57 @@
 <body>
 <main>
   <div class="card">
-    <video src="ramus.mp4" poster="poster.jpg" preload="metadata" playsinline controls></video>
-    <button class="play" type="button" hidden aria-label="play the video with sound">
-      <span class="cue">
-        <span class="disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5Z"/></svg></span>
-        <span class="label"><span class="title">watch the video</span><span class="meta">1:00 · sound on</span></span>
+    <video src="ramus.mp4" poster="poster.jpg" preload="auto" playsinline controls></video>
+    <button class="play" type="button" hidden aria-label="play the video with sound"><img src="poster.jpg" alt=""></button>
+    <button class="sound" type="button" hidden aria-label="play the video with sound, from the start">
+      <span class="pill">
+        <span class="disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9.5v5a1 1 0 0 0 1 1h3l4.4 3.6a1 1 0 0 0 1.6-.8V5.7a1 1 0 0 0-1.6-.8L7 8.5H4a1 1 0 0 0-1 1Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M16 9a4.5 4.5 0 0 1 0 6M18.8 6.2a8.5 8.5 0 0 1 0 11.6"/></svg></span>
+        <span class="label"><span class="title">play with sound</span><span class="meta">from the start</span></span>
       </span>
     </button>
   </div>
   <footer><a href="https://github.com/1337raspberry/ramus">github.com/1337raspberry/ramus</a></footer>
 </main>
 <script>
-  // With scripts on, the poster carries the same play button as the
-  // README's cover image, and the native controls appear once it plays.
+  // Browsers play sound without a click on this page only for sites the
+  // visitor already uses (the README's link is on another site), so the film
+  // tries to start with sound, then muted with a button that restarts it with
+  // sound. If even that is refused (or paused, as in a background tab), the
+  // poster comes back over the card as its play button.
   const video = document.querySelector("video");
   const play = document.querySelector(".play");
+  const sound = document.querySelector(".sound");
   video.controls = false;
-  play.hidden = false;
-  play.addEventListener("click", () => {
+
+  function playWithSound() {
     play.hidden = true;
+    sound.hidden = true;
+    video.muted = false;
     video.controls = true;
     video.play();
+  }
+
+  play.addEventListener("click", playWithSound);
+  sound.addEventListener("click", () => {
+    video.currentTime = 0;
+    playWithSound();
   });
+
+  video
+    .play()
+    .then(() => {
+      video.controls = true;
+    })
+    .catch(() => {
+      video.muted = true;
+      return video.play().then(() => {
+        sound.hidden = false;
+      });
+    })
+    .catch(() => {
+      video.muted = false;
+      play.hidden = false;
+    });
 </script>
 </body>
 </html>
