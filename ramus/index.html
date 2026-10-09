@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ramus</title>
+<meta name="description" content="a genre-first music player for plex">
+<meta name="theme-color" content="#070609">
+<meta property="og:title" content="ramus">
+<meta property="og:description" content="a genre-first music player for plex">
+<meta property="og:type" content="video.other">
+<meta property="og:url" content="https://1337raspberry.github.io/ramus/">
+<meta property="og:image" content="https://1337raspberry.github.io/ramus/poster.jpg">
+<meta property="og:video" content="https://1337raspberry.github.io/ramus/ramus.mp4">
+<meta property="og:video:type" content="video/mp4">
+<meta property="og:video:width" content="1920">
+<meta property="og:video:height" content="1080">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://raw.githubusercontent.com/1337raspberry/ramus/main/ramus-tauri/icons/icon.png">
+<link rel="stylesheet" href="play.css">
+<style>
+  :root { color-scheme: dark; }
+  html, body { background: #070609; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 16px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+  }
+  main { width: min(100%, 1280px); }
+  footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 14px;
+    font: 400 13px/1.4 "JetBrains Mono", ui-monospace, monospace;
+  }
+  footer a { color: #9e9ea0; text-decoration: none; }
+  footer a:hover, footer a:focus-visible { color: #f1f1f3; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <video src="ramus.mp4" poster="poster.jpg" preload="metadata" playsinline controls></video>
+    <button class="play" type="button" hidden aria-label="play the video with sound">
+      <span class="cue">
+        <span class="disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5Z"/></svg></span>
+        <span class="label"><span class="title">watch the video</span><span class="meta">1:00 · sound on</span></span>
+      </span>
+    </button>
+  </div>
+  <footer><a href="https://github.com/1337raspberry/ramus">github.com/1337raspberry/ramus</a></footer>
+</main>
+<script>
+  // With scripts on, the poster carries the same play button as the
+  // README's cover image, and the native controls appear once it plays.
+  const video = document.querySelector("video");
+  const play = document.querySelector(".play");
+  video.controls = false;
+  play.hidden = false;
+  play.addEventListener("click", () => {
+    play.hidden = true;
+    video.controls = true;
+    video.play();
+  });
+</script>
+</body>
+</html>
